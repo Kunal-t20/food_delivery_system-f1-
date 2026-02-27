@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .hero {
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  .hero h2 {
+    font-size: 2em;
+    color: #4a148c;
+  }
+
+  .hero p {
+    font-size: 1.1em;
+    color: #6a1b9a;
+  }
+
+  .roles {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 50px;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(15px);
+    border-left: 5px solid #8e24aa;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(106, 17, 203, 0.15);
+    width: 260px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(156, 39, 176, 0.25);
+  }
+
+  .card h3 {
+    margin-bottom: 10px;
+  }
+
+  .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    background: linear-gradient(135deg, #b993d6, #8ca6db);
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(156, 39, 176, 0.4);
+  }
+</style>
+
+<section class="hero">
+  <h2>Welcome to Food Redistribution System</h2>
+  <p>Choose your role to continue:</p>
+</section>
+
+<section class="roles">
+  <div class="card">
+    <h3>Donor</h3>
+    <p>Contribute food to help others.</p>
+    <a href="{{ url_for('login', role='donor') }}" class="btn">Login as Donor</a>
+  </div>
+
+  <div class="card">
+    <h3>Recipient</h3>
+    <p>Request available food items.</p>
+    <a href="{{ url_for('login', role='recipient') }}" class="btn">Login as Recipient</a>
+  </div>
+
+  <div class="card">
+    <h3>Inspector</h3>
+    <p>Inspect donated food before distribution.</p>
+    <a href="{{ url_for('login', role='inspector') }}" class="btn">Login as Inspector</a>
+  </div>
+
+  <div class="card">
+    <h3>Admin</h3>
+    <p>Manage users, analytics & reports.</p>
+    <a href="{{ url_for('login', role='admin') }}" class="btn">Login as Admin</a>
+  </div>
+</section>
+{% endblock %}

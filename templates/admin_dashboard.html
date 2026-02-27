@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Food Redistribution</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f3f4f6;
+        }
+        .navbar {
+            background: #222831;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #222831;
+            text-align: center;
+        }
+        .cards {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .card {
+            background: #393e46;
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+        }
+        .card h2 {
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #222831;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .track-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .track-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>⚙️ Admin Panel</div>
+        <div>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('manage_users') }}">Manage Users</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>System Overview</h1>
+
+        <div class="cards">
+            <div class="card">
+                <h2>{{ total_donations }}</h2>
+                <p>Total Donations</p>
+            </div>
+            <div class="card">
+                <h2>{{ total_inspections }}</h2>
+                <p>Inspections Done</p>
+            </div>
+            <div class="card">
+                <h2>{{ total_recipients }}</h2>
+                <p>Registered Recipients</p>
+            </div>
+            <div class="card">
+                <h2>{{ total_deliveries }}</h2>
+                <p>Deliveries Completed</p>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 40px;">Recent Donations</h2>
+        <table>
+            <tr>
+                <th>Food</th>
+                <th>Donor</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Track</th>
+            </tr>
+            {% for donation in recent_donations %}
+            <tr>
+                <td>{{ donation.food_name }}</td>
+                <td>{{ donation.donor_name }}</td>
+                <td>{{ donation.status }}</td>
+                <td>{{ donation.date }}</td>
+                <td>
+                    <a href="{{ url_for('track_delivery', donation_id=donation.id) }}" class="track-btn">Track</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

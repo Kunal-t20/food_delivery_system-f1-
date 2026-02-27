@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title if title else "Food Redistribution System" }}</title>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fdfbfb, #e0c3fc, #cbb4d4);
+      margin: 0;
+      padding: 0;
+      color: #4a148c;
+    }
+
+    /* ---------- Navbar ---------- */
+    header {
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 35px;
+      box-shadow: 0 6px 20px rgba(106, 17, 203, 0.2);
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 1.5em;
+      margin: 0;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    nav a {
+      color: white;
+      margin: 0 12px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.15);
+      padding: 6px 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(255,255,255,0.4);
+    }
+
+    main {
+      width: 90%;
+      margin: 40px auto;
+      min-height: 75vh;
+    }
+
+    footer {
+      text-align: center;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      color: white;
+      padding: 14px;
+      margin-top: 50px;
+      box-shadow: 0 -4px 15px rgba(106, 17, 203, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Food Redistribution System</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      {% if 'user_id' in session %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>© 2025 Food Redistribution System | Built with Flask & ❤️</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspector Dashboard | Food Redistribution</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #eef2f3;
+        }
+
+        /* ---------- Navbar ---------- */
+        .navbar {
+            background: #004e89;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            flex-wrap: wrap;
+        }
+
+        .navbar div:first-child {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .navbar a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- Container ---------- */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #004e89;
+            text-align: center;
+        }
+
+        /* ---------- Table ---------- */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            min-width: 700px;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #004e89;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f2f5f7;
+        }
+
+        /* ---------- Buttons ---------- */
+        button {
+            background: #004e89;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #023e73;
+        }
+
+        .reject {
+            background: #b30000;
+        }
+
+        .reject:hover {
+            background: #800000;
+        }
+
+        textarea {
+            width: 100%;
+            resize: vertical;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        /* ---------- Empty State ---------- */
+        .empty {
+            text-align: center;
+            color: #555;
+            margin-top: 30px;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 20px;
+            }
+            th, td {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>🕵️ Inspector Panel</div>
+        <div>
+            <a href="{{ url_for('inspector_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Pending Food Inspections</h1>
+
+        {% if pending and pending|length > 0 %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Food Name</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Donor</th>
+                        <th>Pickup Location</th>
+                        <th>Remarks</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in pending %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.category or "N/A" }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.donor_name }}</td>
+                        <td>
+                            {% if item.latitude and item.longitude %}
+                                <a href="https://www.google.com/maps?q={{ item.latitude }},{{ item.longitude }}" target="_blank">
+                                    📍 View on Map
+                                </a>
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form action="{{ url_for('inspect', food_id=item.id) }}" method="POST" style="display:flex; flex-direction:column; gap:6px;">
+                                <textarea name="remarks" placeholder="Enter remarks..." required></textarea>
+                                <div style="display:flex; gap:5px;">
+                                    <button type="submit" name="result" value="Approved">Approve</button>
+                                    <button type="submit" name="result" value="Rejected" class="reject">Reject</button>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty">No pending inspections right now.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

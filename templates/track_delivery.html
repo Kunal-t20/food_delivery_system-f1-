@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Delivery | Food Redistribution</title>
+    <style>
+        body { font-family: 'Poppins', sans-serif; margin: 0; background: #eef2f3; }
+        .navbar { background: #0b3d91; color: white; display: flex; justify-content: space-between; padding: 15px 25px; }
+        .navbar a { color: white; text-decoration: none; margin: 0 10px; font-weight: 500; }
+        .navbar a:hover { text-decoration: underline; }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #0b3d91; text-align: center; }
+        .status-box {
+            background: #f8f9fb;
+            border-left: 5px solid #0b3d91;
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 8px;
+        }
+        p { margin: 8px 0; }
+        strong { color: #0b3d91; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>📦 Track Delivery</div>
+        <div>
+            <a href="{{ url_for('recipient_dashboard') }}">Back</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Delivery Status</h1>
+        <div class="status-box">
+            <p><strong>Food:</strong> {{ delivery.food_name }}</p>
+            <p><strong>Current Status:</strong> {{ delivery.status }}</p>
+            <p><strong>Last Updated:</strong> {{ delivery.last_update }}</p>
+        </div>
+    </div>
+</body>
+</html>

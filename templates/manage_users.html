@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users | Admin Dashboard</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #f5f6fa;
+            color: #333;
+        }
+
+        header {
+            background-color: #222;
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 1.5em;
+            letter-spacing: 1px;
+        }
+
+        .table-container {
+            width: 90%;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            overflow-x: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #eef6ee;
+        }
+
+        .role-tag {
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: #fff;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .role-admin { background-color: #8e44ad; }
+        .role-donor { background-color: #27ae60; }
+        .role-recipient { background-color: #2980b9; }
+        .role-inspector { background-color: #e67e22; }
+
+        .back-btn {
+            display: inline-block;
+            margin: 30px auto;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+            margin: 30px 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>Admin Dashboard — Manage Users</h2>
+    </header>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user['id'] }}</td>
+                    <td>{{ user['fullname'] }}</td>
+                    <td>{{ user['email'] }}</td>
+                    <td>
+                        <span class="role-tag role-{{ user['role'] }}">{{ user['role'] }}</span>
+                    </td>
+                    <td>{{ user['created_at'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="text-align:center;">
+        <a href="{{ url_for('admin_dashboard') }}" class="back-btn">⬅ Back to Dashboard</a>
+    </div>
+
+    <footer>
+        &copy; {{ datetime.now().year }} Food Redistribution System
+    </footer>
+
+</body>
+</html>

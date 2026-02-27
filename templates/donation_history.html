@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation History | Food Redistribution</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f3f6f9;
+            margin: 0;
+        }
+        .navbar {
+            background: #1b263b;
+            color: #fff;
+            padding: 15px 25px;
+            font-size: 20px;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        table {
+            width: 90%;
+            margin: 40px auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #1b263b;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9fafc;
+        }
+        tr:hover {
+            background: #f1f1f1;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+            background: #1b263b;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 20px auto;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        a:hover {
+            background: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">🍲 Food Redistribution - Donation History</div>
+
+    <table>
+        <tr>
+            <th>Food Item</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Pickup Address</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+        {% if donations %}
+            {% for d in donations %}
+            <tr>
+                <td>{{ d.food_item }}</td>
+                <td>{{ d.type }}</td>
+                <td>{{ d.quantity }}</td>
+                <td>{{ d.pickup_address }}</td>
+                <td>{{ d.status }}</td>
+                <td>{{ d.created_at }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td colspan="6">No donations yet.</td></tr>
+        {% endif %}
+    </table>
+
+    <div style="text-align:center;">
+        <a href="{{ url_for('donor_dashboard') }}">⬅ Back to Dashboard</a>
+    </div>
+</body>
+</html>

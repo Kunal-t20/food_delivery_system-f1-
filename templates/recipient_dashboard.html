@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipient Dashboard | Food Redistribution</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f4f6fa;
+        }
+
+        /* ---------- Navbar ---------- */
+        .navbar {
+            background: #0b3d91;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            flex-wrap: wrap;
+        }
+
+        .navbar div:first-child {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- Container ---------- */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #0b3d91;
+            text-align: center;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            min-width: 600px;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #0b3d91;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f2f5f7;
+        }
+
+        /* ---------- Buttons ---------- */
+        button, .btn {
+            padding: 7px 14px;
+            background: #0b3d91;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        button:hover, .btn:hover {
+            background: #072f6b;
+        }
+
+        .track-btn {
+            background: #228b22;
+        }
+
+        .track-btn:hover {
+            background: #1e7d1e;
+        }
+
+        .map-link {
+            color: #0b3d91;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .map-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- Empty Message ---------- */
+        .empty {
+            text-align: center;
+            color: gray;
+            margin-top: 15px;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 20px;
+            }
+            th, td {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>🍽️ Recipient Panel</div>
+        <div>
+            <a href="{{ url_for('recipient_dashboard') }}">Available Food</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Available Food for Claim</h1>
+        {% if available_foods and available_foods|length > 0 %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Food</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Pickup Location</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for food in available_foods %}
+                    <tr>
+                        <td>{{ food.name }}</td>
+                        <td>{{ food.category or "N/A" }}</td>
+                        <td>{{ food.quantity }}</td>
+                        <td>
+                            {% if food.latitude and food.longitude %}
+                                <a href="https://www.google.com/maps?q={{ food.latitude }},{{ food.longitude }}" target="_blank" class="map-link">
+                                    📍 View on Map
+                                </a>
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form action="{{ url_for('claim_food', food_id=food.id) }}" method="POST">
+                                <button type="submit">Claim</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty">No available food items right now.</p>
+        {% endif %}
+
+        <h2>My Claimed Foods</h2>
+        {% if claims and claims|length > 0 %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Food</th>
+                        <th>Status</th>
+                        <th>Track</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for claim in claims %}
+                    <tr>
+                        <td>{{ claim.name or "N/A" }}</td>
+                        <td>{{ claim.status or "Pending" }}</td>
+                        <td>
+                            <a href="{{ url_for('track_delivery', claim_id=claim.id) }}" class="btn track-btn">Track</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty">You haven’t claimed any food yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
