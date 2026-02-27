@@ -179,10 +179,15 @@ Werkzeug
 ##  Quick Run Recap
 
 ```bash
-git clone <repo>
-cd FoodRedistributionSystem (or cd file path)
+ git clone https://github.com/Kunal-t20/food_delivery_system-f1-.git
+
+ cd FoodRedistributionSystem (or cd file path)
+
+- create virtual env:
+
 python -m venv venv
 venv\Scripts\activate
+
 pip install -r requirements.txt
 python create_db.py
 python app.py
